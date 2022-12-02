@@ -58,7 +58,7 @@ public:
 
 public:
 
-    // Initialize the SLAM system. It launches the Local Mapping, Loop Closing and Viewer threads.
+    // System构造函数：Initialize the SLAM system. It launches the Local Mapping, Loop Closing and Viewer threads.
     System(const string &strVocFile, const string &strSettingsFile, const eSensor sensor, const bool bUseViewer = true);
 
     // Proccess the given stereo frame. Images must be synchronized and rectified.
@@ -124,14 +124,14 @@ public:
 
 private:
 
-    // Input sensor
+    // Input sensor 传感器类型，三种枚举
     eSensor mSensor;
 
     // ORB vocabulary used for place recognition and feature matching.
-    ORBVocabulary* mpVocabulary;
+    ORBVocabulary* mpVocabulary;    //ORB字典，保存ORB描述子聚类结果
 
     // KeyFrame database for place recognition (relocalization and loop detection).
-    KeyFrameDatabase* mpKeyFrameDatabase;
+    KeyFrameDatabase* mpKeyFrameDatabase;   //关键帧数据库，保存ORB描述子倒排索引
 
     // Map structure that stores the pointers to all KeyFrames and MapPoints.
     Map* mpMap;
@@ -139,20 +139,20 @@ private:
     // Tracker. It receives a frame and computes the associated camera pose.
     // It also decides when to insert a new keyframe, create some new MapPoints and
     // performs relocalization if tracking fails.
-    Tracking* mpTracker;
+    Tracking* mpTracker;    //追踪器
 
     // Local Mapper. It manages the local map and performs local bundle adjustment.
-    LocalMapping* mpLocalMapper;
+    LocalMapping* mpLocalMapper;    //局部建图器
 
     // Loop Closer. It searches loops with every new keyframe. If there is a loop it performs
     // a pose graph optimization and full bundle adjustment (in a new thread) afterwards.
-    LoopClosing* mpLoopCloser;
+    LoopClosing* mpLoopCloser;    //回环检测器
 
     // The viewer draws the map and the current camera pose. It uses Pangolin.
-    Viewer* mpViewer;
+    Viewer* mpViewer;   //查看器
 
-    FrameDrawer* mpFrameDrawer;
-    MapDrawer* mpMapDrawer;
+    FrameDrawer* mpFrameDrawer; //帧绘制器
+    MapDrawer* mpMapDrawer;     //地图绘制器
 
     // System threads: Local Mapping, Loop Closing, Viewer.
     // The Tracking thread "lives" in the main execution thread that creates the System object.
@@ -161,11 +161,11 @@ private:
     std::thread* mptViewer;
 
     // Reset flag
-    std::mutex mMutexReset;
+    std::mutex mMutexReset; //系统复位
     bool mbReset;
 
     // Change mode flags
-    std::mutex mMutexMode;
+    std::mutex mMutexMode;  //开启/关闭纯定位模式
     bool mbActivateLocalizationMode;
     bool mbDeactivateLocalizationMode;
 

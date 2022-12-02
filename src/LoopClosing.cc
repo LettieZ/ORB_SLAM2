@@ -53,7 +53,7 @@ void LoopClosing::SetLocalMapper(LocalMapping *pLocalMapper)
     mpLocalMapper=pLocalMapper;
 }
 
-
+//LoopClosing线程主函数
 void LoopClosing::Run()
 {
     mbFinished =false;
@@ -75,12 +75,12 @@ void LoopClosing::Run()
                }
             }
         }       
-
+        //查看是否有外部线程请求复位当前线程
         ResetIfRequested();
 
         if(CheckFinish())
             break;
-
+        //线程暂停5毫秒，5毫秒结束后再从while(1)循环头部开始
         usleep(5000);
     }
 
